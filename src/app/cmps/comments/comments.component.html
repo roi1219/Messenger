@@ -1,0 +1,27 @@
+<div class="comments">
+    <div *ngFor="let comment of comments">
+        <div class="comment">
+            <div class="comment-user">
+                <img [src]="'assets/imgs/'+comment.ownerId+'.jpg'" class="comment-profile">
+                <aside>
+                    <p>{{comment.user.displayName}}</p>
+                    <p>{{comment.createdAt|formatTime}}</p>
+                </aside>
+            </div>
+            <p class="comment-txt" *ngIf="commentIdToEdit!==comment.id;else elseBlock">{{comment.txt}}</p>
+            <p #thenBlock></p>
+            <ng-template #elseBlock>
+                <input [(ngModel)]="txt" type="text" >
+                <button class="btn" (click)="saveComment(comment)">Save</button>
+            </ng-template>
+            <div class="actions" *ngIf="loggedInUser?.id===comment.user.id">
+                <button class="btn" *ngIf="commentIdToEdit!==comment.id" (click)="editComment(comment)">Edit</button>
+                <button class="btn" (click)="removeComment(comment.id)">Delete</button>
+            </div>
+            <button class="btn" *ngIf="loggedInUser" (click)="changeIdToAdd(comment.id)">Comment</button>
+        </div>
+        <comment-edit (sendCommentEvent)="sendComment($event)" *ngIf="IdToAddComment===comment.id" [loggedInUser]="loggedInUser"></comment-edit>
+        <comments class="margin" (sendCommentEvent)="sendComment($event)" (onRemoveComment)="removeComment($event)" *ngIf="comment.comments.length"
+            [comments]="comment.comments" [loggedInUser]="loggedInUser"></comments>
+    </div>
+</div>

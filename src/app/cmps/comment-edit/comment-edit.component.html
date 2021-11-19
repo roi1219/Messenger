@@ -1,0 +1,5 @@
+<form (submit)="sendComment($event)" class="comment-edit">
+    <img [src]="'assets/imgs/'+loggedInUser?.id+'.jpg'">
+    <textarea [(ngModel)]="txt" [ngModelOptions]="{standalone: true}" cols="70" rows="3"></textarea>
+    <button class="btn">Send</button>
+</form>
